@@ -90,8 +90,6 @@ const updateProfilePicController = async (req, res) => {
       return res.status(400).json({ error: "Profile Pic is Required!" });
     }
 
-    console.log("hello");
-
     if (profilePic) {
       // upload image
       const buffer = Buffer.from(
