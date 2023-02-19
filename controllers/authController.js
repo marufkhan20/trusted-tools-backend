@@ -182,11 +182,12 @@ const loginController = async (req, res) => {
       // prepare the user object to generate token
       const userObject = {
         userId: user._id,
-        firstName: user.profile.firstName,
-        lastName: user.profile.lastName,
+        profileId: user?.profile?._id,
+        firstName: user.profile?.firstName,
+        lastName: user.profile?.lastName,
         email: user.email,
         role: user.role || "user",
-        profilePic: user.profile.profilePic,
+        profilePic: user.profile?.profilePic,
       };
 
       // generate token

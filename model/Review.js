@@ -23,6 +23,11 @@ const reviewSchema = new Schema(
       ref: "User",
       required: true,
     },
+    profile: {
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+      required: true,
+    },
   },
   { timestamps: true }
 );

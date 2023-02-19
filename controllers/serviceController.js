@@ -144,9 +144,25 @@ const addNewServciesController = async (req, res) => {
   }
 };
 
+// delete service controller
+const deleteServiceController = async (req, res) => {
+  try {
+    const { id } = req.params || {};
+
+    const deletedService = await Service.findByIdAndDelete(id);
+    res.status(200).json(deletedService);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      error: "Server Error Occured",
+    });
+  }
+};
+
 module.exports = {
   getAllServicesController,
   getSingleServiceController,
   dublicateServiceController,
   addNewServciesController,
+  deleteServiceController,
 };

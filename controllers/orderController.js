@@ -1,3 +1,5 @@
+const Jimp = require("jimp");
+const path = require("path");
 const Conversation = require("../model/Conversation");
 const Message = require("../model/Message");
 const Order = require("../model/Order");
@@ -34,7 +36,33 @@ const createNewOrderController = async (req, res) => {
       paymentNumber,
       transactionId,
       service,
+      screenshot,
     } = req.body || {};
+
+    let imagePath;
+
+    if (screenshot) {
+      // upload image
+      const buffer = Buffer.from(
+        screenshot.replace(/^data:image\/(png|jpg|jpeg);base64,/, ""),
+        "base64"
+      );
+
+      imagePath = `${Date.now()}-${Math.round(Math.random() * 1e9)}.png`;
+
+      try {
+        const jimpResp = await Jimp.read(buffer);
+        jimpResp
+          .resize(300, 300)
+          .write(
+            path.resolve(__dirname, `../public/storage/orders/${imagePath}`)
+          );
+      } catch (err) {
+        return res.status(500).json({
+          error: "Could not process the image!!",
+        });
+      }
+    }
 
     const newOrder = new Order({
       packageName,
@@ -46,6 +74,7 @@ const createNewOrderController = async (req, res) => {
       service,
       user: userId,
       orderDate: Date.now(),
+      screenshot: `/storage/orders/${imagePath}`,
     });
 
     // create conversation

@@ -4,7 +4,7 @@ const {
   getAllServicesController,
   getSingleServiceController,
   dublicateServiceController,
-  getSingleServiceByPackageNameController,
+  deleteServiceController,
 } = require("../controllers/serviceController");
 const checkAdminAuth = require("../middlewares/adminAuthMiddleware");
 
@@ -19,5 +19,8 @@ router.get("/dublicate/:serviceId", checkAdminAuth, dublicateServiceController);
 
 // add new service
 router.post("/", checkAdminAuth, addNewServciesController);
+
+// delete service
+router.delete("/:id", checkAdminAuth, deleteServiceController);
 
 module.exports = router;

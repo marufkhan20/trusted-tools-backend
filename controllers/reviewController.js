@@ -2,6 +2,31 @@ const Order = require("../model/Order");
 const Review = require("../model/Review");
 const Service = require("../model/Service");
 
+// get all reviews controller
+const getAllReviewsController = async (req, res) => {
+  try {
+    const reviews = await Review.find().populate("profile");
+    res.status(200).json(reviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "Server error occurred",
+    });
+  }
+};
+
+// get reviews by service id controller
+const getReviewsByServiceIdController = async (req, res) => {
+  try {
+    const { id } = req.params || {};
+    const reviews = await Review.find({ service: id }).populate("profile");
+    res.status(200).json(reviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error occurred" });
+  }
+};
+
 // get review by order id controller
 const getReviewByOrderId = async (req, res) => {
   try {
@@ -19,7 +44,7 @@ const getReviewByOrderId = async (req, res) => {
 // create new review controller
 const createReviewController = async (req, res) => {
   try {
-    const { rating, description, order, service } = req.body || {};
+    const { rating, description, order, service, profile } = req.body || {};
     const { userId } = req.user || {};
 
     let newReview;
@@ -31,6 +56,7 @@ const createReviewController = async (req, res) => {
         order,
         service,
         user: userId,
+        profile,
       });
     } else {
       newReview = new Review({
@@ -65,6 +91,8 @@ const createReviewController = async (req, res) => {
 };
 
 module.exports = {
+  getAllReviewsController,
+  getReviewsByServiceIdController,
   createReviewController,
   getReviewByOrderId,
 };

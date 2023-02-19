@@ -55,6 +55,7 @@ const orderSchema = new Schema(
       ref: "Review",
     },
     orderDate: Number,
+    screenshot: String,
   },
   { timestamps: true }
 );
